@@ -1,0 +1,64 @@
+---
+# tasks file for roles/deploy_nginx
+- name: Install Packages
+  yum:
+    name:
+    - "{{ web_package }}"
+    - "{{ firewall_package }}"
+    state: latest
+
+- name: Start & Enable Services
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  loop:
+    - "{{ web_service }}"
+    - "{{ firewall_service }}"
+
+- name: Open firewall port/services
+  firewalld:
+    service: "{{ open_service }}"
+    immediate: yes
+    state: enabled
+    permanent: true
+  notify: reload_firewalld
+
+- name: Copy nginx config file
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+  notify: restart_nginx
+
+- name: Create Directory Structure
+  file:
+    path: "{{ root_dir }}"
+    state: directory
+    recurse: yes
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Update nginx document root
+  lineinfile:
+    path: /etc/nginx/nginx.conf
+    regexp: "/usr/share/nginx/html;"
+    line: "        root /var/www/html/public_html;"
+    backrefs: yes
+  notify: reload_nginx
+    
+- name: copy files related to web application
+  copy:
+    src: files/{{ item }}
+    dest: "{{ root_dir }}"
+  loop:
+  - index.html
+  - 404.html
+  - nginx-ansible.png
+
+- name: Update Error configuration
+  lineinfile:
+   path: /etc/nginx/nginx.conf
+   regexp: "error_page 404 40x.html"
+   line: "        error_page 404 404.html;"
+  notify: reload_nginx

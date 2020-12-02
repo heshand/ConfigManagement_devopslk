@@ -1,0 +1,10 @@
+---
+# vars file for roles/delpy_nginx
+web_package: nginx
+web_service: nginx
+firewall_package: firewalld
+firewall_service: firewalld
+open_service: http
+root_dir: /var/www/html/public_html
+root_file: index.html
+error_file: 404.html

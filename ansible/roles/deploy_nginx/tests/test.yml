@@ -1,0 +1,9 @@
+---
+- hosts: all
+  remote_user: ec2-user
+  become: true
+  tasks:
+  - name: Request web page
+    uri:
+      url: http://localhost
+      status_code: 200
