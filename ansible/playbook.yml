@@ -1,0 +1,18 @@
+---
+- name: install and configure nginx webserver
+  hosts: prod
+  remote_user: ec2-user
+  become: true
+  
+  roles:
+  - deploy_nginx
+
+  pre_tasks:
+  - name: Print Message at Start
+    debug:
+      msg: "Starting of Playbook"
+
+  post_tasks:
+  - name: Print Message at End
+    debug:
+      msg: "Ending of Playbook"

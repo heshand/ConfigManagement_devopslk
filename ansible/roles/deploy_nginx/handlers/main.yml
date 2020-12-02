@@ -1,0 +1,17 @@
+---
+# handlers file for roles/delpy_nginx
+- name: restart_nginx
+  service:
+    name: "{{ web_service }}"
+    state: restarted
+
+- name: reload_nginx
+  service:
+    name: "{{ web_service }}"
+    state: reloaded
+
+- name: reload_firewalld
+  service: 
+    name: "{{ firewall_service }}"
+    state: reloaded
+

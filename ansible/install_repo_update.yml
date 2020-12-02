@@ -1,0 +1,22 @@
+---
+- name: install repos and update system
+  hosts: all
+  remote_user: ec2-user
+  become: true
+  tasks:
+
+  - name: Download rpm file to nodes
+    get_url:
+      url: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+      dest: /root/epel-release-latest-7.noarch.rpm
+
+  - name: Install downloaded rpm
+    yum:
+      name: file:///root/epel-release-latest-7.noarch.rpm
+      state: present
+
+  - name: Up to date all packages
+    yum:
+      name: "*"
+      state: latest
+...
