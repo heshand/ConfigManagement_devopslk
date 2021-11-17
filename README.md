@@ -1,4 +1,4 @@
-# BSL-Cloud-Automation-Workshop
+# Configuration Management - using Ansible
 This Gudance is about Ansible Configuration Management on AWS Cloud (EC2 Instance) to configure nginx webserver.
 
 #Prerequisite:
